@@ -24,6 +24,7 @@ import { IEstimate } from "types";
 import type { NextPage } from "next";
 // fetch-keys
 import { ESTIMATES_LIST } from "constants/fetch-keys";
+import projectService from "services/project.service";
 
 const EstimatesSettings: NextPage = () => {
   const [estimateFormOpen, setEstimateFormOpen] = useState(false);
@@ -36,7 +37,7 @@ const EstimatesSettings: NextPage = () => {
 
   const { setToastAlert } = useToast();
 
-  const { projectDetails } = useProjectDetails();
+  const { projectDetails, mutateProjectDetails } = useProjectDetails();
 
   const scrollToRef = useRef<HTMLDivElement>(null);
 
@@ -73,6 +74,30 @@ const EstimatesSettings: NextPage = () => {
       });
   };
 
+  const toggleEstimatesOff = () => {
+    if (!workspaceSlug || !projectId || !projectDetails) return;
+
+    mutateProjectDetails((prevData) => {
+      if (!prevData) return prevData;
+
+      return { ...prevData, estimate: null };
+    }, false);
+
+    const payload = {
+      estimate: null,
+    };
+
+    projectService
+      .updateProject(workspaceSlug as string, projectId as string, payload)
+      .catch(() => {
+        setToastAlert({
+          type: "error",
+          title: "Error!",
+          message: "Estimate points could not be used. Please try again.",
+        });
+      });
+  };
+
   return (
     <>
       <ProjectAuthorizationWrapper
@@ -96,8 +121,25 @@ const EstimatesSettings: NextPage = () => {
           }}
         />
         <section className="grid grid-cols-12 gap-10">
-          <div className="col-span-12 sm:col-span-5">
+          <div className="col-span-12 sm:col-span-5 flex items-center gap-2">
             <h3 className="text-[28px] font-semibold">Estimates</h3>
+            <button
+              type="button"
+              className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
+                projectDetails?.estimate ? "bg-green-500" : "bg-gray-200"
+              }`}
+              role="switch"
+              aria-checked={projectDetails?.estimate ? true : false}
+              onClick={toggleEstimatesOff}
+            >
+              <span className="sr-only">Use cycles</span>
+              <span
+                aria-hidden="true"
+                className={`inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
+                  projectDetails?.estimate ? "translate-x-5" : "translate-x-0"
+                }`}
+              />
+            </button>
           </div>
           <div className="col-span-12 space-y-5 sm:col-span-7">
             <div className="flex sm:justify-end sm:items-end sm:h-full text-theme">

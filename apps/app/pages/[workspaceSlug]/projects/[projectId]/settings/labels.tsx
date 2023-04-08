@@ -25,7 +25,7 @@ import { BreadcrumbItem, Breadcrumbs } from "components/breadcrumbs";
 import { PlusIcon } from "@heroicons/react/24/outline";
 // types
 import { IIssueLabels, UserAuth } from "types";
-import type { GetServerSidePropsContext, NextPage } from "next";
+import type { NextPage } from "next";
 // fetch-keys
 import { PROJECT_DETAILS, PROJECT_ISSUE_LABELS } from "constants/fetch-keys";
 

@@ -17,6 +17,7 @@ import issuesService from "services/issues.service";
 // hooks
 import useIssuesView from "hooks/use-issues-view";
 import useToast from "hooks/use-toast";
+import useEstimate from "hooks/use-estimate";
 // components
 import {
   ViewAssigneeSelect,
@@ -49,7 +50,6 @@ import {
   MODULE_ISSUES_WITH_PARAMS,
   PROJECT_ISSUES_LIST_WITH_PARAMS,
 } from "constants/fetch-keys";
-import useEstimateOption from "hooks/use-estimate-option";
 
 type Props = {
   type?: string;
@@ -92,7 +92,7 @@ export const SingleBoardIssue: React.FC<Props> = ({
 
   const { orderBy, params } = useIssuesView();
 
-  const { estimateValue } = useEstimateOption(issue.estimate_point);
+  const { estimateValue } = useEstimate(issue.estimate_point);
 
   const router = useRouter();
   const { workspaceSlug, projectId, cycleId, moduleId } = router.query;

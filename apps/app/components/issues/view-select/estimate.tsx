@@ -1,16 +1,13 @@
 import React from "react";
 
+// hooks
+import useEstimate from "hooks/use-estimate";
 // ui
 import { CustomSelect, Tooltip } from "components/ui";
-// icons
-import { getPriorityIcon } from "components/icons/priority-icon";
 // types
 import { IIssue } from "types";
-// constants
-import { PRIORITIES } from "constants/project";
 // services
 import trackEventServices from "services/track-event.service";
-import useEstimateOption from "hooks/use-estimate-option";
 
 type Props = {
   issue: IIssue;
@@ -27,9 +24,7 @@ export const ViewEstimateSelect: React.FC<Props> = ({
   selfPositioned = false,
   isNotAllowed,
 }) => {
-  const { isEstimateActive, estimatePoints, estimateValue } = useEstimateOption(
-    issue.estimate_point
-  );
+  const { isEstimatesInUse, estimatePoints, estimateValue } = useEstimate(issue.estimate_point);
 
   return (
     <CustomSelect

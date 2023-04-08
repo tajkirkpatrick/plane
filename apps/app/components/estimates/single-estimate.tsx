@@ -61,6 +61,15 @@ export const SingleEstimate: React.FC<Props> = ({
   const handleUseEstimate = async () => {
     if (!workspaceSlug || !projectId) return;
 
+    if (!estimatePoints || estimatePoints.length === 0) {
+      setToastAlert({
+        type: "error",
+        title: "Error!",
+        message: "Estimate points are not set. Please set them first.",
+      });
+      return;
+    }
+
     const payload = {
       estimate: estimate.id,
     };
@@ -142,19 +151,21 @@ export const SingleEstimate: React.FC<Props> = ({
           </CustomMenu>
         </div>
         {estimatePoints && estimatePoints.length > 0 ? (
-          <div className="flex gap-2">
-            {estimatePoints.length > 0 && "Estimate points ("}
-            {estimatePoints.map((point, i) => (
-              <h6 key={point.id}>
-                {point.value}
-                {i !== estimatePoints.length - 1 && ","}{" "}
-              </h6>
-            ))}
-            {estimatePoints.length > 0 && ")"}
+          <div className="flex text-sm text-gray-400">
+            Estimate points(
+            <div className="flex gap-2">
+              {estimatePoints.map((point, index) => (
+                <span key={point.id}>
+                  {point.value}
+                  {index !== estimatePoints.length - 1 && ","}
+                </span>
+              ))}
+            </div>
+            )
           </div>
         ) : (
           <div>
-            <p className=" text-sm text-gray-300">No estimate points</p>
+            <p className="text-sm text-gray-400">No estimate points</p>
           </div>
         )}
       </div>
