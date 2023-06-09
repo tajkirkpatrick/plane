@@ -136,7 +136,7 @@ const Profile: NextPage = () => {
         userImage
       />
       {myProfile ? (
-        <div className="px-24 py-8">
+        <div className="p-8">
           <div className="mb-12 space-y-6">
             <div>
               <h3 className="text-3xl font-semibold">Profile Settings</h3>
