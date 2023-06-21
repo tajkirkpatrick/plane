@@ -176,11 +176,10 @@ export const IssueActivitySection: React.FC<Props> = ({ issueId, user }) => {
 
   const getLabelColor = (labelId: string) => {
     if (!issueLabels) return;
+
     const label = issueLabels.find((label) => label.id === labelId);
-    if (typeof label !== "undefined") {
-      return label.color !== "" ? label.color : "#000000";
-    }
-    return "#000000";
+
+    return label?.color ?? "#000000";
   };
 
   if (!issueActivities) {
